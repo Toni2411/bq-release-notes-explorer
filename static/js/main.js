@@ -30,6 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterChips = document.getElementById('filter-chips');
     const sortSelect = document.getElementById('sort-select');
     const btnResetFilters = document.getElementById('btn-reset-filters');
+
+    const btnThemeToggle = document.getElementById('btn-theme-toggle');
+    const themeToggleIcon = document.getElementById('theme-toggle-icon');
     
     // Modal Elements
     const tweetModal = document.getElementById('tweet-modal');
@@ -52,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     init();
 
     function init() {
+        initTheme();
         fetchReleaseNotes();
         setupEventListeners();
     }
@@ -100,6 +104,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     
     function setupEventListeners() {
+        // Theme toggle
+        btnThemeToggle.addEventListener('click', () => {
+            toggleTheme();
+        });
+
         // Refresh button
         btnRefresh.addEventListener('click', () => {
             fetchReleaseNotes(true);
@@ -458,5 +467,40 @@ document.addEventListener('DOMContentLoaded', () => {
         // Set up periodic update of the relative timestamp indicator
         if (window.fetchedTimer) clearInterval(window.fetchedTimer);
         window.fetchedTimer = setInterval(updateText, 60000);
+    }
+
+    // ==========================================================================
+    // THEME SWITCHER HELPER FUNCTIONS
+    // ==========================================================================
+    
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        // Default to dark mode if not specified
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeToggleIcon.className = 'fa-solid fa-sun';
+        } else {
+            document.body.classList.remove('light-mode');
+            themeToggleIcon.className = 'fa-solid fa-moon';
+        }
+    }
+
+    function toggleTheme() {
+        const isLight = document.body.classList.toggle('light-mode');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        
+        if (isLight) {
+            themeToggleIcon.className = 'fa-solid fa-sun';
+        } else {
+            themeToggleIcon.className = 'fa-solid fa-moon';
+        }
+        
+        // Add a micro-animation (brief rotate)
+        themeToggleIcon.style.transform = 'rotate(360deg)';
+        themeToggleIcon.style.transition = 'transform 0.3s ease';
+        setTimeout(() => {
+            themeToggleIcon.style.transform = '';
+            themeToggleIcon.style.transition = '';
+        }, 300);
     }
 });

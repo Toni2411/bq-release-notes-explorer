@@ -12,6 +12,20 @@
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
     --text-muted: #64748b;
+
+    /* Theme adaptive element backgrounds */
+    --bg-input: rgba(0, 0, 0, 0.2);
+    --bg-input-focus: rgba(0, 0, 0, 0.3);
+    --bg-badge: rgba(255, 255, 255, 0.03);
+    --bg-badge-hover: rgba(255, 255, 255, 0.08);
+    --bg-code: rgba(0, 0, 0, 0.3);
+    --color-code: #fda4af;
+    --bg-modal: #0f141c;
+    --border-modal: rgba(255, 255, 255, 0.15);
+    --bg-tweet: #000000;
+    --border-tweet: rgba(255, 255, 255, 0.1);
+    --bg-link-preview: rgba(255, 255, 255, 0.02);
+    --bg-modal-footer: #0d1117;
     
     /* Type Badge Colors */
     --color-feature: #10b981;
@@ -38,6 +52,35 @@
     /* Transitions */
     --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.light-mode {
+    --bg-dark: #f1f5f9;
+    --bg-card: rgba(255, 255, 255, 0.75);
+    --bg-card-hover: rgba(255, 255, 255, 0.9);
+    --border-color: rgba(15, 23, 42, 0.08);
+    --border-color-hover: rgba(15, 23, 42, 0.15);
+    
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    
+    --bg-input: rgba(255, 255, 255, 0.85);
+    --bg-input-focus: rgba(255, 255, 255, 1);
+    --bg-badge: rgba(15, 23, 42, 0.03);
+    --bg-badge-hover: rgba(15, 23, 42, 0.06);
+    --bg-code: rgba(15, 23, 42, 0.05);
+    --color-code: #be123c;
+    --bg-modal: #ffffff;
+    --border-modal: rgba(15, 23, 42, 0.1);
+    --bg-tweet: #f7f9f9;
+    --border-tweet: rgba(15, 23, 42, 0.08);
+    --bg-link-preview: #ffffff;
+    --bg-modal-footer: #f8fafc;
+}
+
+body.light-mode .glow-orb {
+    opacity: 0.05;
 }
 
 /* ==========================================================================
@@ -185,13 +228,34 @@ body {
     gap: 16px;
 }
 
+.btn-theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--bg-badge);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    color: var(--text-primary);
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: var(--transition-fast);
+}
+
+.btn-theme-toggle:hover {
+    background: var(--bg-badge-hover);
+    border-color: var(--border-color-hover);
+    transform: scale(1.05);
+}
+
 .status-indicator {
     display: flex;
     align-items: center;
     gap: 8px;
     font-size: 0.85rem;
     color: var(--text-secondary);
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--bg-badge);
     padding: 6px 12px;
     border-radius: 20px;
     border: 1px solid var(--border-color);
@@ -322,7 +386,7 @@ body {
     position: relative;
     display: flex;
     align-items: center;
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--bg-input);
     border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 2px 14px;
@@ -332,7 +396,7 @@ body {
 .search-box:focus-within {
     border-color: #3b82f6;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
-    background: rgba(0, 0, 0, 0.3);
+    background: var(--bg-input-focus);
 }
 
 .search-icon {
@@ -394,7 +458,7 @@ body {
     align-items: center;
     gap: 6px;
     padding: 6px 12px;
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--bg-badge);
     border: 1px solid var(--border-color);
     color: var(--text-secondary);
     border-radius: 30px;
@@ -406,7 +470,7 @@ body {
 }
 
 .chip:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--bg-badge-hover);
     color: var(--text-primary);
     border-color: var(--border-color-hover);
 }
@@ -443,7 +507,7 @@ body {
 }
 
 .custom-select {
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--bg-input);
     border: 1px solid var(--border-color);
     color: var(--text-primary);
     padding: 8px 12px;
@@ -457,6 +521,11 @@ body {
 
 .custom-select:focus {
     border-color: #3b82f6;
+}
+
+.custom-select option {
+    background: var(--bg-modal);
+    color: var(--text-primary);
 }
 
 /* ==========================================================================
@@ -649,18 +718,18 @@ body {
 /* Code tags formatting */
 .card-content code {
     font-family: 'JetBrains Mono', monospace;
-    background: rgba(0, 0, 0, 0.3);
+    background: var(--bg-code);
     padding: 2px 6px;
     border-radius: 4px;
     font-size: 0.85em;
-    color: #fda4af;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--color-code);
+    border: 1px solid var(--border-color);
 }
 
 /* Strong formatting */
 .card-content strong {
     font-weight: 600;
-    color: #f1f5f9;
+    color: var(--text-primary);
 }
 
 /* ==========================================================================
@@ -786,8 +855,8 @@ body {
 }
 
 .modal-card {
-    background: #0f141c;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: var(--bg-modal);
+    border: 1px solid var(--border-modal);
     border-radius: 20px;
     width: 100%;
     max-width: 580px;
@@ -806,7 +875,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 16px 24px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .modal-title {
@@ -858,8 +927,8 @@ body {
 
 /* Mock Tweet Card */
 .mock-tweet-card {
-    background: #000000;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--bg-tweet);
+    border: 1px solid var(--border-tweet);
     border-radius: 14px;
     padding: 16px;
     margin-bottom: 16px;
@@ -923,8 +992,8 @@ body {
 
 .tweet-attached-link-preview {
     display: flex;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--bg-link-preview);
+    border: 1px solid var(--border-tweet);
     border-radius: 12px;
     overflow: hidden;
 }
@@ -938,7 +1007,7 @@ body {
     justify-content: center;
     font-size: 1.8rem;
     color: #3b82f6;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    border-right: 1px solid var(--border-tweet);
 }
 
 .link-preview-info {
@@ -1018,8 +1087,8 @@ body {
     justify-content: flex-end;
     gap: 12px;
     padding: 16px 24px;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    background: #0d1117;
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-modal-footer);
 }
 
 /* Animations pulse */
