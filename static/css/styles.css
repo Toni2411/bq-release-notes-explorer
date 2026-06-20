@@ -481,6 +481,19 @@ body {
     border-color: rgba(59, 130, 246, 0.4);
 }
 
+.chip-count {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-left: 4px;
+    font-weight: 400;
+    opacity: 0.8;
+}
+
+.chip.active .chip-count {
+    color: #60a5fa;
+    opacity: 1;
+}
+
 .chip .dot {
     width: 6px;
     height: 6px;
@@ -674,6 +687,29 @@ body {
 .btn-share:hover {
     background: rgba(29, 155, 240, 0.15);
     border-color: rgba(29, 155, 240, 0.4);
+    transform: scale(1.03);
+}
+
+.btn-copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: var(--bg-badge);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.btn-copy:hover {
+    background: var(--bg-badge-hover);
+    color: var(--text-primary);
+    border-color: var(--border-color-hover);
     transform: scale(1.03);
 }
 

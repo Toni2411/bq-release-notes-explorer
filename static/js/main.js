@@ -80,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (result.status === 'success') {
                 state.updates = result.data;
                 updateLastFetchedTime(result.last_fetched);
+                updateCategoryCounts();
                 applyFiltersAndRender();
             } else {
                 throw new Error(result.message || 'Unknown backend error');
@@ -90,6 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Try fallback to whatever cached updates exist in the list
             if (state.updates.length > 0) {
+                updateCategoryCounts();
                 applyFiltersAndRender();
             } else {
                 showEmptyState(true);
@@ -192,6 +194,31 @@ document.addEventListener('DOMContentLoaded', () => {
         applyFiltersAndRender();
     }
 
+    function updateCategoryCounts() {
+        const counts = {
+            all: state.updates.length,
+            feature: 0,
+            announcement: 0,
+            breaking: 0,
+            issue: 0,
+            change: 0
+        };
+        
+        state.updates.forEach(u => {
+            const type = u.type.toLowerCase();
+            if (type in counts) {
+                counts[type]++;
+            }
+        });
+        
+        Object.keys(counts).forEach(key => {
+            const span = document.getElementById(`count-${key}`);
+            if (span) {
+                span.textContent = `(${counts[key]})`;
+            }
+        });
+    }
+
     function applyFiltersAndRender() {
         let filtered = [...state.updates];
 
@@ -262,6 +289,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     </span>
                 </div>
                 <div class="card-actions">
+                    <button class="btn-copy" data-id="${update.id}" title="Copy formatted update to clipboard">
+                        <i class="fa-regular fa-copy"></i>
+                        <span>Copy</span>
+                    </button>
                     <button class="btn-share" data-id="${update.id}" title="Share this update on X / Twitter">
                         <i class="fa-brands fa-x-twitter"></i>
                         <span>Tweet</span>
@@ -277,6 +308,31 @@ document.addEventListener('DOMContentLoaded', () => {
         const btnShare = card.querySelector('.btn-share');
         btnShare.addEventListener('click', () => {
             openTweetModal(update);
+        });
+
+        // Wire up Copy button on card
+        const btnCopy = card.querySelector('.btn-copy');
+        btnCopy.addEventListener('click', () => {
+            const copyText = `BigQuery Release [${update.type}] (${update.date}):\n"${update.content_text}"\n\nRead more: ${update.link}`;
+            navigator.clipboard.writeText(copyText).then(() => {
+                const icon = btnCopy.querySelector('i');
+                const text = btnCopy.querySelector('span');
+                
+                // Swap icon and text for success feedback
+                icon.className = 'fa-solid fa-check';
+                text.textContent = 'Copied!';
+                btnCopy.style.color = '#10b981';
+                btnCopy.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+                
+                setTimeout(() => {
+                    icon.className = 'fa-regular fa-copy';
+                    text.textContent = 'Copy';
+                    btnCopy.style.color = '';
+                    btnCopy.style.borderColor = '';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
         });
 
         return card;
